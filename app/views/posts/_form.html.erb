@@ -1,4 +1,25 @@
 <%= form_for @post do |f| %>
+	<!-- 这个地方是跟 post.rb 里面的 validate 有关
+	validate 只要失败的话,比如说你标题没写, 错误信息
+	机会存在 @post.errors 里面,下面的代码就是说,
+	如果 errors 里面有东西,就打出来, 如果没有,就不会
+	跳进这个 if 条件里,这里面的东西也就不会显示出来 -->
+	<% if @post.errors.any? %>
+		<!--  注意要加上 id = "error" 才能有炫酷的效果哦 -->
+		<div id="errors">
+			<!-- 下面这个pluralize 就是根据传进去的 errors.count
+			决定是用 复数(errors) 还是 单数(error) -->
+			<h2><%= pluralize(@post.errors.count, "error") %> prevented this post from saving:</h2>
+			<ul>
+				<!-- errors.full_messages 会显示这条错误完整的信息, 存在 msg
+				这个局部变量里面 -->
+				<% @post.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+
 	<%= f.label :title %><br>
 	<%= f.text_field :title %><br>
 	<br>
